@@ -15,12 +15,13 @@ class _AboutScreenState extends State<AboutScreen> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: DrawerSceen(),
+        //drawer: DrawerSceen(),
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 0, 100, 400),
           leading: IconButton(
             onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
+              //_scaffoldKey.currentState.openDrawer();
+              Navigator.pop(context);
             },
             icon: Icon(
               Icons.list,

@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+
   // static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
   //   testDevices: testDevice != null ? <String>[testDevice] : null,
   //   nonPersonalizedAds: true,
@@ -62,6 +63,11 @@ class _HomeScreenState extends State<HomeScreen>
   //   //_interstitialAd.dispose();
   //   super.dispose();
   // }
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: SafeArea(
         child: Scaffold(
           key: _scaffoldKey,
-          drawer: DrawerSceen(),
+          drawer: DrawerSceen(_tabController),
           appBar: AppBar(
             leading: IconButton(
               icon: Icon(Icons.list),

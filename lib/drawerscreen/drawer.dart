@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jungkook_app/drawerscreen/AboutScreen.dart';
 import 'package:jungkook_app/drawerscreen/FavoriteScreen.dart';
+import 'package:jungkook_app/drawerscreen/OtherScreen.dart';
 import 'package:jungkook_app/screens/HomeScreen.dart';
+import 'package:jungkook_app/utils/Common.dart';
 
 class DrawerSceen extends StatefulWidget {
-  DrawerSceen({Key key}) : super(key: key);
+  TabController _tabController;
+  DrawerSceen(this._tabController);
 
   @override
   _DrawerSceenState createState() => _DrawerSceenState();
@@ -82,14 +85,12 @@ class _DrawerSceenState extends State<DrawerSceen> {
               title: Text("Recent Wallpaper"),
               onTap: () {
                 Navigator.pop(context);
-                setState(() {
-                  color = Colors.grey;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
-                      ));
-                });
+                widget._tabController.animateTo(0);
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => HomeScreen(),
+                //     ));
               },
             ),
           ),
@@ -102,6 +103,7 @@ class _DrawerSceenState extends State<DrawerSceen> {
             title: Text("Catepory"),
             onTap: () {
               Navigator.pop(context);
+              widget._tabController.animateTo(1);
             },
           ),
           ListTile(
@@ -148,6 +150,16 @@ class _DrawerSceenState extends State<DrawerSceen> {
               ),
             ),
             title: Text("Rate"),
+            onTap: () {
+              Navigator.pop(context);
+              setState(() {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OtherScreen(),
+                    ));
+              });
+            },
           ),
           ListTile(
             leading: Container(
@@ -159,6 +171,16 @@ class _DrawerSceenState extends State<DrawerSceen> {
               ),
             ),
             title: Text("More"),
+            onTap: () {
+              Navigator.pop(context);
+              setState(() {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OtherScreen(),
+                    ));
+              });
+            },
           ),
           ListTile(
             leading: Container(
@@ -171,6 +193,16 @@ class _DrawerSceenState extends State<DrawerSceen> {
               ),
             ),
             title: Text("Share"),
+            onTap: () {
+              Navigator.pop(context);
+              setState(() {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OtherScreen(),
+                    ));
+              });
+            },
           ),
           ListTile(
             onTap: () {

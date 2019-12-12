@@ -1,4 +1,6 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:jungkook_app/screens/ItemPhoto.dart';
 
 class RecentSceen extends StatefulWidget {
@@ -26,52 +28,52 @@ class _RecentSceenState extends State<RecentSceen> {
     "assets/recent/kook12.jpg",
   ];
 
-  // static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-  //   testDevices: testDevice != null ? <String>[testDevice] : null,
-  //   nonPersonalizedAds: true,
-  //   keywords: <String>['Game', 'Mario'],
-  // );
-  // BannerAd _bannerAd;
-  // InterstitialAd _interstitialAd;
-  // BannerAd createBannerAd() {
-  //   return BannerAd(
-  //       adUnitId: BannerAd.testAdUnitId,
-  //       //Change BannerAd adUnitId with Admob ID
-  //       size: AdSize.banner,
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("BannerAd $event");
-  //       });
-  // }
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: testDevice != null ? <String>[testDevice] : null,
+    nonPersonalizedAds: true,
+    keywords: <String>['Game', 'Mario'],
+  );
+  BannerAd _bannerAd;
+  InterstitialAd _interstitialAd;
+  BannerAd createBannerAd() {
+    return BannerAd(
+        adUnitId: BannerAd.testAdUnitId,
+        //Change BannerAd adUnitId with Admob ID
+        size: AdSize.banner,
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("BannerAd $event");
+        });
+  }
 
-  // InterstitialAd createInterstitialAd() {
-  //   return InterstitialAd(
-  //       adUnitId: InterstitialAd.testAdUnitId,
-  //       //Change Interstitial AdUnitId with Admob ID
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("IntersttialAd $event");
-  //       });
-  // }
+  InterstitialAd createInterstitialAd() {
+    return InterstitialAd(
+        adUnitId: InterstitialAd.testAdUnitId,
+        //Change Interstitial AdUnitId with Admob ID
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("IntersttialAd $event");
+        });
+  }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
-  //   //Change appId With Admob Id
-  //   // _bannerAd = createBannerAd()
-  //   //   ..load()
-  //   //   ..show();
-  //   // super.initState();
-  // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
+    //Change appId With Admob Id
+    _bannerAd = createBannerAd()
+      ..load()
+      ..show();
+    super.initState();
+  }
 
-  // @override
-  // void dispose() {
-  //   //_bannerAd.dispose();
-  //   //_interstitialAd.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+    //_interstitialAd.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,17 +87,16 @@ class _RecentSceenState extends State<RecentSceen> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            setState(() {
-              // createInterstitialAd()
-              //   ..load()
-              //   ..show();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ItemPhoto(
-                            img: items[index],
-                          )));
-            });
+            createInterstitialAd()
+              ..load()
+              ..show();
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ItemPhoto(
+                          img: items[index],
+                        )));
           },
           child: Container(
             height: MediaQuery.of(context).size.height * 0.3,

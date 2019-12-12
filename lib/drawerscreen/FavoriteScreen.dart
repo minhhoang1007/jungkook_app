@@ -13,19 +13,20 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    print(Common().item);
+    print(Common.item);
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight) / 2;
     final double itemWidth = size.width / 2;
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: DrawerSceen(),
+        //drawer: DrawerSceen(),
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 0, 100, 400),
           leading: IconButton(
             onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
+              //_scaffoldKey.currentState.openDrawer();
+              Navigator.pop(context);
             },
             icon: Icon(
               Icons.list,
@@ -47,14 +48,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ],
           ),
         ),
-        body: Common().item.length == 0
+        body: Common.item.length == 0
             ? Container(
                 child: Center(
                   child: Text("No image favorite"),
                 ),
               )
             : GridView.builder(
-                itemCount: Common().item.length,
+                itemCount: Common.item.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: (itemWidth / itemHeight)),
@@ -64,7 +65,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.3,
                       width: MediaQuery.of(context).size.width * 0.5,
-                      child: Image.asset(Common().item[index]),
+                      child: Image.asset(Common.item[index]),
                     ),
                   );
                 },

@@ -39,12 +39,13 @@ class Wallpaper {
     StreamController<String> streamController = new StreamController();
     try {
       final dir = await getExternalStorageDirectory();
+      print("abc00000000000000000000000000000000000000");
       print(dir);
       Dio dio = new Dio();
       dio
           .download(
             url,
-            "${dir.path}/myimage.jpeg",
+            "${dir.path}/myimage.png",
             onReceiveProgress: (int received, int total) {
               streamController
                   .add(((received / total) * 100).toStringAsFixed(0) + "%");
@@ -57,7 +58,7 @@ class Wallpaper {
           .whenComplete(() {
             streamController.close();
           });
-      yield* streamController.stream;
+      // yield* streamController.stream;
     } catch (ex) {
       throw ex;
     }

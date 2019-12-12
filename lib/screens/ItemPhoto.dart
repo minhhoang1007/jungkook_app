@@ -23,7 +23,7 @@ class _ItemPhotoState extends State<ItemPhoto> {
   @override
   void initState() {
     super.initState();
-    Common().item.length == 0 ? chonfavo = false : chonfavo = true;
+    Common.item.length == 0 ? chonfavo = false : chonfavo = true;
     loadImage();
   }
 
@@ -46,7 +46,6 @@ class _ItemPhotoState extends State<ItemPhoto> {
     var imageData = await rootBundle.load(widget.img).then((byteData) {
       return byteData.buffer.asUint8List();
     });
-
     if (!mounted) return;
     setState(() {
       _imageData = imageData;
@@ -61,31 +60,32 @@ class _ItemPhotoState extends State<ItemPhoto> {
   Stream<String> progressString;
   String res;
   bool downloading = false;
-  _setwallpaper() {
-    MyApp.platform
-        .invokeMethod("theme", {"key": "vakuekajshdaskdjha"})
-        .then((value) {})
-        .catchError((onError) {});
-    progressString = Wallpaper.ImageDownloadProgress(widget.img);
-    progressString.listen((data) {
-      setState(() {
-        res = data;
-        downloading = true;
-      });
-      print("DataReceived: " + data);
-    }, onDone: () async {
-      home = await Wallpaper.homeScreen();
-      setState(() {
-        downloading = false;
-        home = home;
-      });
-      print("Task Done");
-      // }, onError: (error) {
-      //   setState(() {
-      //     downloading = false;
-      //   });
-      //   print("Some Error");
-    });
+  _setwallpaper(String path) {
+    MyApp.platform.invokeMethod("setwallpaper", {"path": path}).then((value) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("OK"),
+      ));
+    }).catchError((onError) {});
+    // progressString = Wallpaper.ImageDownloadProgress();
+    // progressString.listen((data) {
+    //   setState(() {
+    //     res = data;
+    //     downloading = true;
+    //   });
+    //   print("DataReceived: " + data);
+    // }, onDone: () async {
+    //   home = await Wallpaper.homeScreen();
+    //   setState(() {
+    //     downloading = false;
+    //     home = home;
+    //   });
+    //   print("Task Done");
+    // }, onError: (error) {
+    //   setState(() {
+    //     downloading = false;
+    //   });
+    //   print("Some Error");
+    // });
   }
 
   @override
@@ -129,8 +129,10 @@ class _ItemPhotoState extends State<ItemPhoto> {
                                 color: Colors.white,
                               ),
                         onPressed: () {
-                          Common().item.add(widget.img);
-                          print(Common().item.length);
+                          chonfavo
+                              ? Common.item.remove(widget.img)
+                              : Common.item.add(widget.img);
+                          print(Common.item.length);
                           setState(() {
                             chonfavo = !chonfavo;
                             Fluttertoast.showToast(
@@ -172,8 +174,13 @@ class _ItemPhotoState extends State<ItemPhoto> {
                   color: Colors.white,
                 ),
                 label: "Set as Wallpaper",
-                onTap: () {
-                  _setwallpaper();
+                onTap: () async {
+                  String filePath =
+                      await PhotosSaver.saveFile(fileData: _imageData);
+                  _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      duration: Duration(seconds: 5),
+                      content: Text("Created image file at $filePath")));
+                  _setwallpaper(filePath);
                 }),
             SpeedDialChild(
                 child: Icon(Icons.share, color: Colors.white),
@@ -194,6 +201,8 @@ class _ItemPhotoState extends State<ItemPhoto> {
                   _scaffoldKey.currentState.showSnackBar(SnackBar(
                       duration: Duration(seconds: 5),
                       content: Text("Created image file at $filePath")));
+
+                  print(filePath);
                 }),
           ],
         ),

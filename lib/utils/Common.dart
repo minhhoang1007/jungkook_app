@@ -1,4 +1,4 @@
 class Common {
-  List<String> item = [];
-  static final CHANNEL = "com.example.jungkook_wallpaper";
+  static List<String> item = [];
+  static final CHANNEL = "demo";
 }
