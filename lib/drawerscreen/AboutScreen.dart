@@ -17,14 +17,14 @@ class _AboutScreenState extends State<AboutScreen> {
         key: _scaffoldKey,
         //drawer: DrawerSceen(),
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 0, 100, 400),
+          backgroundColor: Color.fromARGB(255, 0, 0, 130),
           leading: IconButton(
             onPressed: () {
               //_scaffoldKey.currentState.openDrawer();
               Navigator.pop(context);
             },
             icon: Icon(
-              Icons.list,
+              Icons.arrow_back,
               color: Colors.white,
             ),
             iconSize: 30,
@@ -32,6 +32,9 @@ class _AboutScreenState extends State<AboutScreen> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
               Text(
                 "Jungkook Wallpaper",
                 style: TextStyle(color: Colors.white, fontSize: 16),

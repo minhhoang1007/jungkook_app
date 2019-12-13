@@ -35,6 +35,7 @@ class _RecentSceenState extends State<RecentSceen> {
   );
   BannerAd _bannerAd;
   InterstitialAd _interstitialAd;
+  bool abc = false;
   BannerAd createBannerAd() {
     return BannerAd(
         adUnitId: BannerAd.testAdUnitId,
@@ -46,31 +47,74 @@ class _RecentSceenState extends State<RecentSceen> {
         });
   }
 
-  InterstitialAd createInterstitialAd() {
-    return InterstitialAd(
-        adUnitId: InterstitialAd.testAdUnitId,
-        //Change Interstitial AdUnitId with Admob ID
-        targetingInfo: targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("IntersttialAd $event");
-        });
+  // InterstitialAd createInterstitialAd() {
+  //   return InterstitialAd(
+  //       adUnitId: InterstitialAd.testAdUnitId,
+  //       targetingInfo: targetingInfo,
+  //       listener: (MobileAdEvent event) {
+  //         print("IntersttialAd $event");
+  //       });
+  // }
+  void getAd(item) async {
+    _interstitialAd = InterstitialAd(
+      adUnitId: InterstitialAd.testAdUnitId,
+      listener: (MobileAdEvent event) {
+        if (event == MobileAdEvent.closed) {
+          _interstitialAd.load();
+        }
+        handEvent(event, item);
+      },
+    );
+    _interstitialAd.load();
+  }
+
+  void handEvent(MobileAdEvent event, item) {
+    switch (event) {
+      case MobileAdEvent.loaded:
+        //if (!c) {
+        _interstitialAd.show();
+        //c = true;
+        //}
+        break;
+      case MobileAdEvent.opened:
+        break;
+      case MobileAdEvent.closed:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ItemPhoto(
+              img: item,
+            ),
+          ),
+        );
+        break;
+      case MobileAdEvent.failedToLoad:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ItemPhoto(
+              img: item,
+            ),
+          ),
+        );
+        break;
+      default:
+    }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
-    //Change appId With Admob Id
-    _bannerAd = createBannerAd()
-      ..load()
-      ..show();
+    // _bannerAd = createBannerAd()
+    //   ..load()
+    //   ..show();
     super.initState();
   }
 
   @override
   void dispose() {
-    _bannerAd.dispose();
+    //_bannerAd.dispose();
     //_interstitialAd.dispose();
     super.dispose();
   }
@@ -87,16 +131,7 @@ class _RecentSceenState extends State<RecentSceen> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            createInterstitialAd()
-              ..load()
-              ..show();
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ItemPhoto(
-                          img: items[index],
-                        )));
+            getAd(items[index]);
           },
           child: Container(
             height: MediaQuery.of(context).size.height * 0.3,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jungkook_app/drawerscreen/drawer.dart';
+import 'package:jungkook_app/screens/ItemPhoto.dart';
 import 'package:jungkook_app/utils/Common.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -22,14 +23,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         key: _scaffoldKey,
         //drawer: DrawerSceen(),
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 0, 100, 400),
+          backgroundColor: Color.fromARGB(255, 0, 0, 130),
           leading: IconButton(
             onPressed: () {
               //_scaffoldKey.currentState.openDrawer();
               Navigator.pop(context);
             },
             icon: Icon(
-              Icons.list,
+              Icons.arrow_back,
               color: Colors.white,
             ),
             iconSize: 30,
@@ -37,6 +38,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: 10),
               Text(
                 "Jungkook Wallpaper",
                 style: TextStyle(color: Colors.white, fontSize: 16),
@@ -61,7 +63,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     childAspectRatio: (itemWidth / itemHeight)),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ItemPhoto(
+                                    img: Common.item[index],
+                                  )));
+                    },
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.3,
                       width: MediaQuery.of(context).size.width * 0.5,

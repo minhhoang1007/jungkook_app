@@ -1,9 +1,8 @@
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:jungkook_app/drawerscreen/AboutScreen.dart';
 import 'package:jungkook_app/drawerscreen/FavoriteScreen.dart';
-import 'package:jungkook_app/drawerscreen/OtherScreen.dart';
-import 'package:jungkook_app/screens/HomeScreen.dart';
-import 'package:jungkook_app/utils/Common.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DrawerSceen extends StatefulWidget {
   TabController _tabController;
@@ -15,6 +14,14 @@ class DrawerSceen extends StatefulWidget {
 
 class _DrawerSceenState extends State<DrawerSceen> {
   Color color;
+  _launchURL() async {
+    const url = 'https://flutter.dev';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   void initState() {
@@ -86,11 +93,6 @@ class _DrawerSceenState extends State<DrawerSceen> {
               onTap: () {
                 Navigator.pop(context);
                 widget._tabController.animateTo(0);
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => HomeScreen(),
-                //     ));
               },
             ),
           ),
@@ -151,14 +153,7 @@ class _DrawerSceenState extends State<DrawerSceen> {
             ),
             title: Text("Rate"),
             onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OtherScreen(),
-                    ));
-              });
+              _launchURL();
             },
           ),
           ListTile(
@@ -172,14 +167,7 @@ class _DrawerSceenState extends State<DrawerSceen> {
             ),
             title: Text("More"),
             onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OtherScreen(),
-                    ));
-              });
+              _launchURL();
             },
           ),
           ListTile(
@@ -194,14 +182,10 @@ class _DrawerSceenState extends State<DrawerSceen> {
             ),
             title: Text("Share"),
             onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OtherScreen(),
-                    ));
-              });
+              Share.text(
+                  'my text title',
+                  'This is my text to share with other applications.',
+                  'text/plain');
             },
           ),
           ListTile(

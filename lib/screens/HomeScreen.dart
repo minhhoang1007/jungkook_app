@@ -15,54 +15,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-
-  // static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-  //   testDevices: testDevice != null ? <String>[testDevice] : null,
-  //   nonPersonalizedAds: true,
-  //   keywords: <String>['Game', 'Mario'],
-  // );
-
-  // BannerAd _bannerAd;
-  // InterstitialAd _interstitialAd;
-
-  // BannerAd createBannerAd() {
-  //   return BannerAd(
-  //       adUnitId: BannerAd.testAdUnitId,
-  //       //Change BannerAd adUnitId with Admob ID
-  //       size: AdSize.banner,
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("BannerAd $event");
-  //       });
-  // }
-
-  // InterstitialAd createInterstitialAd() {
-  //   return InterstitialAd(
-  //       adUnitId: InterstitialAd.testAdUnitId,
-  //       //Change Interstitial AdUnitId with Admob ID
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("IntersttialAd $event");
-  //       });
-  // }
-
-  // @override
-  // void initState() {
-  //   _tabController = new TabController(length: 2, vsync: this);
-  //   FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
-  //   //Change appId With Admob Id
-  //   _bannerAd = createBannerAd()
-  //     ..load()
-  //     ..show();
-  //   super.initState();
-  // }
-
-  // @override
-  // void dispose() {
-  //   _bannerAd.dispose();
-  //   //_interstitialAd.dispose();
-  //   super.dispose();
-  // }
   @override
   void initState() {
     super.initState();
