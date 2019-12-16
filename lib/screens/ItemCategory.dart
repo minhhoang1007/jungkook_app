@@ -11,6 +11,12 @@ class ItemCategory extends StatefulWidget {
 
 class _ItemCategoryState extends State<ItemCategory> {
   List<String> items = [
+    "assets/recent/kook13.jpg",
+    "assets/recent/kook14.jpg",
+    "assets/recent/kook15.jpg",
+    "assets/recent/kook16.jpg",
+    "assets/recent/kook17.jpg",
+    "assets/recent/kook18.jpg",
     "assets/recent/kook1.jpg",
     "assets/recent/kook2.jpg",
     "assets/recent/kook3.jpg",

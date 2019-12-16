@@ -26,6 +26,12 @@ class _RecentSceenState extends State<RecentSceen> {
     "assets/recent/kook10.jpg",
     "assets/recent/kook11.jpg",
     "assets/recent/kook12.jpg",
+    "assets/recent/kook13.jpg",
+    "assets/recent/kook14.jpg",
+    "assets/recent/kook15.jpg",
+    "assets/recent/kook16.jpg",
+    "assets/recent/kook17.jpg",
+    "assets/recent/kook18.jpg",
   ];
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
