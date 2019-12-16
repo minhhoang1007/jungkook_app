@@ -36,6 +36,7 @@ class _RecentSceenState extends State<RecentSceen> {
   BannerAd _bannerAd;
   InterstitialAd _interstitialAd;
   bool abc = false;
+  bool isLoad = false;
   BannerAd createBannerAd() {
     return BannerAd(
         adUnitId: BannerAd.testAdUnitId,
@@ -56,6 +57,9 @@ class _RecentSceenState extends State<RecentSceen> {
   //       });
   // }
   void getAd(item) async {
+    setState(() {
+      isLoad = true;
+    });
     _interstitialAd = InterstitialAd(
       adUnitId: InterstitialAd.testAdUnitId,
       listener: (MobileAdEvent event) {
@@ -79,6 +83,7 @@ class _RecentSceenState extends State<RecentSceen> {
       case MobileAdEvent.opened:
         break;
       case MobileAdEvent.closed:
+        isLoad = false;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -89,6 +94,7 @@ class _RecentSceenState extends State<RecentSceen> {
         );
         break;
       case MobileAdEvent.failedToLoad:
+        isLoad = false;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -124,22 +130,39 @@ class _RecentSceenState extends State<RecentSceen> {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight) / 2;
     final double itemWidth = size.width / 2;
-    return GridView.builder(
-      itemCount: items.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
-      itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () {
-            getAd(items[index]);
+    return Stack(
+      children: <Widget>[
+        GridView.builder(
+          itemCount: items.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                getAd(items[index]);
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Image.asset(items[index]),
+              ),
+            );
           },
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            width: MediaQuery.of(context).size.width * 0.5,
-            child: Image.asset(items[index]),
-          ),
-        );
-      },
+        ),
+        isLoad
+            ? Positioned(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 1,
+                  width: double.infinity,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              )
+            : Container(
+                height: 0,
+              )
+      ],
     );
   }
 }
