@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:jungkook_app/drawerscreen/drawer.dart';
 import 'package:jungkook_app/screens/ItemPhoto.dart';
@@ -10,8 +11,107 @@ class FavoriteScreen extends StatefulWidget {
   _FavoriteScreenState createState() => _FavoriteScreenState();
 }
 
+const String testDevice = 'MobileId';
+
 class _FavoriteScreenState extends State<FavoriteScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: testDevice != null ? <String>[testDevice] : null,
+    nonPersonalizedAds: true,
+    keywords: <String>['Game', 'Mario'],
+  );
+  BannerAd _bannerAd;
+  InterstitialAd _interstitialAd;
+  bool abc = false;
+  bool isLoad = false;
+  BannerAd createBannerAd() {
+    return BannerAd(
+        adUnitId: BannerAd.testAdUnitId,
+        //Change BannerAd adUnitId with Admob ID
+        size: AdSize.banner,
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("BannerAd $event");
+        });
+  }
+
+  // InterstitialAd createInterstitialAd() {
+  //   return InterstitialAd(
+  //       adUnitId: InterstitialAd.testAdUnitId,
+  //       targetingInfo: targetingInfo,
+  //       listener: (MobileAdEvent event) {
+  //         print("IntersttialAd $event");
+  //       });
+  // }
+  void getAd(item) async {
+    setState(() {
+      isLoad = true;
+    });
+    _interstitialAd = InterstitialAd(
+      adUnitId: InterstitialAd.testAdUnitId,
+      listener: (MobileAdEvent event) {
+        if (event == MobileAdEvent.closed) {
+          _interstitialAd.load();
+        }
+        handEvent(event, item);
+      },
+    );
+    _interstitialAd.load();
+  }
+
+  void handEvent(MobileAdEvent event, item) {
+    switch (event) {
+      case MobileAdEvent.loaded:
+        //if (!c) {
+        _interstitialAd.show();
+        //c = true;
+        //}
+        break;
+      case MobileAdEvent.opened:
+        break;
+      case MobileAdEvent.closed:
+        isLoad = false;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ItemPhoto(
+              img: item,
+            ),
+          ),
+        );
+        break;
+      case MobileAdEvent.failedToLoad:
+        isLoad = false;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ItemPhoto(
+              img: item,
+            ),
+          ),
+        );
+        break;
+      default:
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
+    // _bannerAd = createBannerAd()
+    //   ..load()
+    //   ..show();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    //_bannerAd.dispose();
+    //_interstitialAd.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     print(Common.item);
@@ -50,35 +150,53 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ],
           ),
         ),
-        body: Common.item.length == 0
-            ? Container(
-                child: Center(
-                  child: Text("No image favorite"),
-                ),
-              )
-            : GridView.builder(
-                itemCount: Common.item.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: (itemWidth / itemHeight)),
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ItemPhoto(
-                                    img: Common.item[index],
-                                  )));
-                    },
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: Image.asset(Common.item[index]),
+        body: Stack(
+          children: <Widget>[
+            Common.item.length == 0
+                ? Container(
+                    child: Center(
+                      child: Text("No image favorite"),
                     ),
-                  );
-                },
-              ),
+                  )
+                : GridView.builder(
+                    itemCount: Common.item.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: (itemWidth / itemHeight)),
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          getAd(Common.item[index]);
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ItemPhoto(
+                          //               img: Common.item[index],
+                          //             )));
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Image.asset(Common.item[index]),
+                        ),
+                      );
+                    },
+                  ),
+            isLoad
+                ? Positioned(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 1,
+                      width: double.infinity,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  )
+                : Container(
+                    height: 0,
+                  )
+          ],
+        ),
       ),
     );
   }
