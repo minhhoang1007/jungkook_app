@@ -1,6 +1,6 @@
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
+import 'package:jungkook_app/constants/ApiConstants.dart';
 import 'package:jungkook_app/screens/ItemPhoto.dart';
 
 class RecentSceen extends StatefulWidget {
@@ -45,7 +45,7 @@ class _RecentSceenState extends State<RecentSceen> {
   bool isLoad = false;
   BannerAd createBannerAd() {
     return BannerAd(
-        adUnitId: BannerAd.testAdUnitId,
+        adUnitId: ADMOB_BANNER_ID,
         //Change BannerAd adUnitId with Admob ID
         size: AdSize.banner,
         targetingInfo: targetingInfo,
@@ -56,7 +56,7 @@ class _RecentSceenState extends State<RecentSceen> {
 
   // InterstitialAd createInterstitialAd() {
   //   return InterstitialAd(
-  //       adUnitId: InterstitialAd.testAdUnitId,
+  //       adUnitId: ADMOB_INTERSTITIAL_ID,
   //       targetingInfo: targetingInfo,
   //       listener: (MobileAdEvent event) {
   //         print("IntersttialAd $event");
@@ -67,7 +67,7 @@ class _RecentSceenState extends State<RecentSceen> {
       isLoad = true;
     });
     _interstitialAd = InterstitialAd(
-      adUnitId: InterstitialAd.testAdUnitId,
+      adUnitId: ADMOB_INTERSTITIAL_ID,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.closed) {
           _interstitialAd.load();
@@ -117,7 +117,7 @@ class _RecentSceenState extends State<RecentSceen> {
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
+    FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     // _bannerAd = createBannerAd()
     //   ..load()
     //   ..show();
@@ -140,8 +140,8 @@ class _RecentSceenState extends State<RecentSceen> {
       children: <Widget>[
         GridView.builder(
           itemCount: items.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: () {

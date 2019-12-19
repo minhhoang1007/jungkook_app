@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="jungkook_app"
+        android:label="BTS Jungkook Wallpaper"
         android:icon="@mipmap/ic_launcher">
        <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

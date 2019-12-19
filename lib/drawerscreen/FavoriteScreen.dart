@@ -1,5 +1,6 @@
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:jungkook_app/constants/ApiConstants.dart';
 import 'package:jungkook_app/drawerscreen/drawer.dart';
 import 'package:jungkook_app/screens/ItemPhoto.dart';
 import 'package:jungkook_app/utils/Common.dart';
@@ -26,7 +27,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   bool isLoad = false;
   BannerAd createBannerAd() {
     return BannerAd(
-        adUnitId: BannerAd.testAdUnitId,
+        adUnitId: ADMOB_BANNER_ID,
         //Change BannerAd adUnitId with Admob ID
         size: AdSize.banner,
         targetingInfo: targetingInfo,
@@ -37,7 +38,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   // InterstitialAd createInterstitialAd() {
   //   return InterstitialAd(
-  //       adUnitId: InterstitialAd.testAdUnitId,
+  //       adUnitId: ADMOB_INTERSTITIAL_ID,
   //       targetingInfo: targetingInfo,
   //       listener: (MobileAdEvent event) {
   //         print("IntersttialAd $event");
@@ -48,7 +49,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       isLoad = true;
     });
     _interstitialAd = InterstitialAd(
-      adUnitId: InterstitialAd.testAdUnitId,
+      adUnitId: ADMOB_INTERSTITIAL_ID,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.closed) {
           _interstitialAd.load();
@@ -98,7 +99,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
+    FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     // _bannerAd = createBannerAd()
     //   ..load()
     //   ..show();
@@ -161,8 +162,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 : GridView.builder(
                     itemCount: Common.item.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: (itemWidth / itemHeight)),
+                        crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {

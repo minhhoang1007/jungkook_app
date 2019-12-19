@@ -13,15 +13,14 @@ class _CategorySceenState extends State<CategorySceen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: 22,
+        itemCount: 12,
         itemBuilder: (context, position) {
           return GestureDetector(
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ItemCategory(
-                        title: "JUNGKOOK WALLPAPER #${22 - position} | New"),
+                    builder: (context) => ItemCategory(title: "JUNGKOOK WALLPAPER #${12 - position} | New"),
                   ));
             },
             child: Container(
@@ -31,9 +30,7 @@ class _CategorySceenState extends State<CategorySceen> {
                 children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/anhcate.png"),
-                          fit: BoxFit.fill),
+                      image: DecorationImage(image: AssetImage("assets/images/anhcate.png"), fit: BoxFit.fill),
                     ),
                   ),
                   Positioned.fill(
@@ -56,10 +53,7 @@ class _CategorySceenState extends State<CategorySceen> {
                           Text(
                             "WALLS STUDIO",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Raleway",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 36),
+                                color: Colors.white, fontFamily: "Raleway", fontWeight: FontWeight.bold, fontSize: 36),
                           ),
                           Container(
                             margin: EdgeInsets.only(
@@ -78,11 +72,8 @@ class _CategorySceenState extends State<CategorySceen> {
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        "JUNGKOOK WALLPAPER #${22 - position} | New",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        "JUNGKOOK WALLPAPER #${12 - position} | New",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
                   ),
