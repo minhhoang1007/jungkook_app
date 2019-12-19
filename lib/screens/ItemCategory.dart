@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jungkook_app/constants/ApiConstants.dart';
 import 'package:jungkook_app/screens/ItemPhoto.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
@@ -44,7 +45,7 @@ class _ItemCategoryState extends State<ItemCategory> {
   bool isLoad = false;
   BannerAd createBannerAd() {
     return BannerAd(
-        adUnitId: BannerAd.testAdUnitId,
+        adUnitId: ADMOB_BANNER_ID,
         //Change BannerAd adUnitId with Admob ID
         size: AdSize.banner,
         targetingInfo: targetingInfo,
@@ -55,7 +56,7 @@ class _ItemCategoryState extends State<ItemCategory> {
 
   // InterstitialAd createInterstitialAd() {
   //   return InterstitialAd(
-  //       adUnitId: InterstitialAd.testAdUnitId,
+  //       adUnitId: ADMOB_INTERSTITIAL_ID,
   //       targetingInfo: targetingInfo,
   //       listener: (MobileAdEvent event) {
   //         print("IntersttialAd $event");
@@ -66,7 +67,7 @@ class _ItemCategoryState extends State<ItemCategory> {
       isLoad = true;
     });
     _interstitialAd = InterstitialAd(
-      adUnitId: InterstitialAd.testAdUnitId,
+      adUnitId: ADMOB_INTERSTITIAL_ID,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.closed) {
           _interstitialAd.load();
@@ -116,7 +117,7 @@ class _ItemCategoryState extends State<ItemCategory> {
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
+    FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     // _bannerAd = createBannerAd()
     //   ..load()
     //   ..show();
@@ -146,8 +147,7 @@ class _ItemCategoryState extends State<ItemCategory> {
         ),
         title: Text(
           widget.title,
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Stack(

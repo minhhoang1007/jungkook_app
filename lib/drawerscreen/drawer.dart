@@ -13,9 +13,9 @@ class DrawerSceen extends StatefulWidget {
 }
 
 class _DrawerSceenState extends State<DrawerSceen> {
+  String url = "https://play.google.com/store/apps/details?id=com.bts.jungkook.wallpaper.koreanpop";
   Color color;
   _launchURL() async {
-    const url = 'https://flutter.dev';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -45,35 +45,25 @@ class _DrawerSceenState extends State<DrawerSceen> {
                   Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image:
-                            AssetImage("assets/images/drawer_header_image.png"),
+                        image: AssetImage("assets/images/drawer_header_image.png"),
                         fit: BoxFit.fill,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05),
+                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.12,
                         ),
-                        Container(
-                            height: 50,
-                            width: 50,
-                            child: Image.asset(
-                                "assets/images/ic_notification_large.png")),
+                        Container(height: 50, width: 50, child: Image.asset("assets/images/ic_notification_large.png")),
                         SizedBox(
                           height: 10,
                         ),
-                        Text("JungKook Wallpaper",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16)),
-                        Text("jungkook@gmail.com",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
+                        Text("JungKook Wallpaper", style: TextStyle(color: Colors.white, fontSize: 16)),
+                        Text("jungkook@gmail.com", style: TextStyle(color: Colors.white, fontSize: 14)),
                       ],
                     ),
                   ),
@@ -156,20 +146,20 @@ class _DrawerSceenState extends State<DrawerSceen> {
               _launchURL();
             },
           ),
-          ListTile(
-            leading: Container(
-              height: 30,
-              width: 30,
-              child: Image.asset(
-                "assets/images/ic_drawer_more.png",
-                fit: BoxFit.fill,
-              ),
-            ),
-            title: Text("More"),
-            onTap: () {
-              _launchURL();
-            },
-          ),
+          // ListTile(
+          //   leading: Container(
+          //     height: 30,
+          //     width: 30,
+          //     child: Image.asset(
+          //       "assets/images/ic_drawer_more.png",
+          //       fit: BoxFit.fill,
+          //     ),
+          //   ),
+          //   title: Text("More"),
+          //   onTap: () {
+          //     _launchURL();
+          //   },
+          // ),
           ListTile(
             leading: Container(
               height: 30,
@@ -182,10 +172,7 @@ class _DrawerSceenState extends State<DrawerSceen> {
             ),
             title: Text("Share"),
             onTap: () {
-              Share.text(
-                  'my text title',
-                  'This is my text to share with other applications.',
-                  'text/plain');
+              Share.text('BTS Jungkook Wallpaper', 'BTS Jungkook Wallpaper ${url}', 'text/plain');
             },
           ),
           ListTile(

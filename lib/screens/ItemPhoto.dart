@@ -30,9 +30,8 @@ class _ItemPhotoState extends State<ItemPhoto> {
   Future<void> _shareImage() async {
     try {
       final ByteData bytes = await rootBundle.load(widget.img);
-      await Share.file(
-          'esys image', 'esys.png', bytes.buffer.asUint8List(), 'image/png',
-          text: 'My optional text.');
+      await Share.file('BTS Jungkook Wallpaper', 'jungkook.png', bytes.buffer.asUint8List(), 'image/png',
+          text: 'BTS Jungkook Wallpaper');
     } catch (e) {
       print('error: $e');
     }
@@ -52,10 +51,7 @@ class _ItemPhotoState extends State<ItemPhoto> {
   }
 
   //Set wallpaper
-  String home = "HomeScreen",
-      lock = "LockScreen",
-      both = "BothScreen",
-      system = "SystemWallpaer";
+  String home = "HomeScreen", lock = "LockScreen", both = "BothScreen", system = "SystemWallpaer";
   Stream<String> progressString;
   String res;
   bool downloading = false;
@@ -71,122 +67,112 @@ class _ItemPhotoState extends State<ItemPhoto> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Center(
-        child: Scaffold(
-          key: _scaffoldKey,
-          body: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(widget.img), fit: BoxFit.fill),
-                ),
+      top: false,
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage(widget.img), fit: BoxFit.fill),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                width: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: chonfavo
+                            ? Icon(
+                                Icons.favorite,
+                                color: Colors.white,
+                              )
+                            : Icon(
+                                Icons.favorite_border,
+                                color: Colors.white,
+                              ),
+                        onPressed: () {
+                          chonfavo ? Common.item.remove(widget.img) : Common.item.add(widget.img);
+                          print(Common.item.length);
+                          setState(() {
+                            chonfavo = !chonfavo;
+                            Fluttertoast.showToast(
+                              msg: chonfavo ? "Saved favorite" : "Deleted favorite",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIos: 1,
+                              fontSize: 16,
+                            );
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: chonfavo
-                              ? Icon(
-                                  Icons.favorite,
-                                  color: Colors.white,
-                                )
-                              : Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.white,
-                                ),
-                          onPressed: () {
-                            chonfavo
-                                ? Common.item.remove(widget.img)
-                                : Common.item.add(widget.img);
-                            print(Common.item.length);
-                            setState(() {
-                              chonfavo = !chonfavo;
-                              Fluttertoast.showToast(
-                                msg: chonfavo
-                                    ? "Saved favorite"
-                                    : "Deleted favorite",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIos: 1,
-                                fontSize: 16,
-                              );
-                            });
-                          },
+                      IconButton(
+                        icon: Icon(
+                          Icons.share,
+                          color: Colors.white,
                         ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.white,
-                          ),
-                          onPressed: () async {
-                            print("share");
-                            await _shareImage();
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                        onPressed: () async {
+                          print("share");
+                          await _shareImage();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-          floatingActionButton: SpeedDial(
-            animatedIcon: AnimatedIcons.add_event,
-            closeManually: true,
-            children: [
-              SpeedDialChild(
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  ),
-                  label: "Set as Wallpaper",
-                  onTap: () async {
-                    String filePath =
-                        await PhotosSaver.saveFile(fileData: _imageData);
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                        duration: Duration(seconds: 5),
-                        content: Text("Created image file at $filePath")));
-                    _setwallpaper(filePath);
-                  }),
-              SpeedDialChild(
-                  child: Icon(Icons.share, color: Colors.white),
-                  label: "Share",
-                  onTap: () async {
-                    print("share");
-                    await _shareImage();
-                  }),
-              SpeedDialChild(
-                  child: Icon(
-                    Icons.save,
-                    color: Colors.white,
-                  ),
-                  label: "Save",
-                  onTap: () async {
-                    String filePath =
-                        await PhotosSaver.saveFile(fileData: _imageData);
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                        duration: Duration(seconds: 5),
-                        content: Text("Created image file at $filePath")));
+            ),
+          ],
+        ),
+        floatingActionButton: SpeedDial(
+          animatedIcon: AnimatedIcons.add_event,
+          closeManually: true,
+          children: [
+            SpeedDialChild(
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+                label: "Set as Wallpaper",
+                onTap: () async {
+                  String filePath = await PhotosSaver.saveFile(fileData: _imageData);
+                  _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(duration: Duration(seconds: 5), content: Text("Created image file at $filePath")));
+                  _setwallpaper(filePath);
+                }),
+            SpeedDialChild(
+                child: Icon(Icons.share, color: Colors.white),
+                label: "Share",
+                onTap: () async {
+                  print("share");
+                  await _shareImage();
+                }),
+            SpeedDialChild(
+                child: Icon(
+                  Icons.save,
+                  color: Colors.white,
+                ),
+                label: "Save",
+                onTap: () async {
+                  String filePath = await PhotosSaver.saveFile(fileData: _imageData);
+                  _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(duration: Duration(seconds: 5), content: Text("Created image file at $filePath")));
 
-                    print(filePath);
-                  }),
-            ],
-          ),
+                  print(filePath);
+                }),
+          ],
         ),
       ),
     );
