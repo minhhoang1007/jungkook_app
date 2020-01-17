@@ -1,6 +1,7 @@
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:jungkook_app/configs/ads.dart';
 import 'package:jungkook_app/screens/ItemPhoto.dart';
 
 class RecentSceen extends StatefulWidget {
@@ -10,10 +11,11 @@ class RecentSceen extends StatefulWidget {
   _RecentSceenState createState() => _RecentSceenState();
 }
 
-const String testDevice = 'MobileId';
-
 class _RecentSceenState extends State<RecentSceen> {
   List<String> items = [
+    "assets/recent/kook22.jpg",
+    "assets/recent/kook23.jpg",
+    "assets/recent/kook24.jpg",
     "assets/recent/kook1.jpg",
     "assets/recent/kook2.jpg",
     "assets/recent/kook3.jpg",
@@ -32,42 +34,19 @@ class _RecentSceenState extends State<RecentSceen> {
     "assets/recent/kook16.jpg",
     "assets/recent/kook17.jpg",
     "assets/recent/kook18.jpg",
+    "assets/recent/kook19.jpg",
+    "assets/recent/kook20.jpg",
   ];
-
-  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    testDevices: testDevice != null ? <String>[testDevice] : null,
-    nonPersonalizedAds: true,
-    keywords: <String>['Game', 'Mario'],
-  );
-  BannerAd _bannerAd;
   InterstitialAd _interstitialAd;
   bool abc = false;
   bool isLoad = false;
-  BannerAd createBannerAd() {
-    return BannerAd(
-        adUnitId: BannerAd.testAdUnitId,
-        //Change BannerAd adUnitId with Admob ID
-        size: AdSize.banner,
-        targetingInfo: targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("BannerAd $event");
-        });
-  }
 
-  // InterstitialAd createInterstitialAd() {
-  //   return InterstitialAd(
-  //       adUnitId: InterstitialAd.testAdUnitId,
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("IntersttialAd $event");
-  //       });
-  // }
   void getAd(item) async {
     setState(() {
       isLoad = true;
     });
     _interstitialAd = InterstitialAd(
-      adUnitId: InterstitialAd.testAdUnitId,
+      adUnitId: interUnitId,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.closed) {
           _interstitialAd.load();
@@ -81,10 +60,8 @@ class _RecentSceenState extends State<RecentSceen> {
   void handEvent(MobileAdEvent event, item) {
     switch (event) {
       case MobileAdEvent.loaded:
-        //if (!c) {
         _interstitialAd.show();
-        //c = true;
-        //}
+
         break;
       case MobileAdEvent.opened:
         break;
@@ -117,48 +94,46 @@ class _RecentSceenState extends State<RecentSceen> {
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
-    // _bannerAd = createBannerAd()
-    //   ..load()
-    //   ..show();
+    FirebaseAdMob.instance.initialize(appId: appId);
     super.initState();
   }
 
   @override
   void dispose() {
-    //_bannerAd.dispose();
-    //_interstitialAd.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height - kToolbarHeight) / 2;
-    final double itemWidth = size.width / 2;
     return Stack(
       children: <Widget>[
-        GridView.builder(
+        StaggeredGridView.countBuilder(
+          crossAxisCount: 4,
+          physics: ScrollPhysics(),
           itemCount: items.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              onTap: () {
-                getAd(items[index]);
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.3,
-                width: MediaQuery.of(context).size.width * 0.5,
-                child: Image.asset(items[index]),
+          itemBuilder: (BuildContext context, int index) => Card(
+            elevation: 4,
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+              child: InkWell(
+                onTap: () {
+                  getAd(items[index]);
+                },
+                child: Image.asset(items[index], fit: BoxFit.cover),
               ),
-            );
-          },
+            ),
+          ),
+          staggeredTileBuilder: (int index) =>
+              StaggeredTile.count(2, index.isEven ? 2.7 : 3),
+          scrollDirection: Axis.vertical,
+          mainAxisSpacing: 3.0,
+          crossAxisSpacing: 3.0,
         ),
         isLoad
             ? Positioned(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 1,
+                  color: Colors.transparent,
+                  height: MediaQuery.of(context).size.height,
                   width: double.infinity,
                   child: Center(
                     child: CircularProgressIndicator(),

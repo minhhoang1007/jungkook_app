@@ -2,6 +2,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:jungkook_app/drawerscreen/AboutScreen.dart';
 import 'package:jungkook_app/drawerscreen/FavoriteScreen.dart';
+import 'package:jungkook_app/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DrawerSceen extends StatefulWidget {
@@ -58,7 +59,7 @@ class _DrawerSceenState extends State<DrawerSceen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.12,
+                          height: MediaQuery.of(context).size.height * 0.15,
                         ),
                         Container(
                             height: 50,
@@ -71,9 +72,9 @@ class _DrawerSceenState extends State<DrawerSceen> {
                         Text("JungKook Wallpaper",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 16)),
-                        Text("jungkook@gmail.com",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
+                        // Text("jungkook@gmail.com",
+                        //     style:
+                        //         TextStyle(color: Colors.white, fontSize: 14)),
                       ],
                     ),
                   ),
@@ -153,23 +154,23 @@ class _DrawerSceenState extends State<DrawerSceen> {
             ),
             title: Text("Rate"),
             onTap: () {
-              _launchURL();
+              MyApp.platform.invokeMethod("rateAuto");
             },
           ),
-          ListTile(
-            leading: Container(
-              height: 30,
-              width: 30,
-              child: Image.asset(
-                "assets/images/ic_drawer_more.png",
-                fit: BoxFit.fill,
-              ),
-            ),
-            title: Text("More"),
-            onTap: () {
-              _launchURL();
-            },
-          ),
+          // ListTile(
+          //   leading: Container(
+          //     height: 30,
+          //     width: 30,
+          //     child: Image.asset(
+          //       "assets/images/ic_drawer_more.png",
+          //       fit: BoxFit.fill,
+          //     ),
+          //   ),
+          //   title: Text("More"),
+          //   onTap: () {
+          //     _launchURL();
+          //   },
+          // ),
           ListTile(
             leading: Container(
               height: 30,
@@ -188,27 +189,27 @@ class _DrawerSceenState extends State<DrawerSceen> {
                   'text/plain');
             },
           ),
-          ListTile(
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AboutScreen(),
-                    ));
-              });
-            },
-            leading: Container(
-              height: 30,
-              width: 30,
-              child: Image.asset(
-                "assets/images/ic_drawer_about.png",
-                fit: BoxFit.fill,
-              ),
-            ),
-            title: Text("About"),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     setState(() {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //             builder: (context) => AboutScreen(),
+          //           ));
+          //     });
+          //   },
+          //   leading: Container(
+          //     height: 30,
+          //     width: 30,
+          //     child: Image.asset(
+          //       "assets/images/ic_drawer_about.png",
+          //       fit: BoxFit.fill,
+          //     ),
+          //   ),
+          //   title: Text("About"),
+          // ),
         ],
       ),
     );

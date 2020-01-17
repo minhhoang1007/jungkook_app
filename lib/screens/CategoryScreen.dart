@@ -13,7 +13,7 @@ class _CategorySceenState extends State<CategorySceen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: 22,
+        itemCount: 12,
         itemBuilder: (context, position) {
           return GestureDetector(
             onTap: () {
@@ -21,7 +21,9 @@ class _CategorySceenState extends State<CategorySceen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ItemCategory(
-                        title: "JUNGKOOK WALLPAPER #${22 - position} | New"),
+                      title: "JUNGKOOK WALLPAPER #${12 - position} | New",
+                      rand: position,
+                    ),
                   ));
             },
             child: Container(
@@ -78,7 +80,7 @@ class _CategorySceenState extends State<CategorySceen> {
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: Text(
-                        "JUNGKOOK WALLPAPER #${22 - position} | New",
+                        "JUNGKOOK WALLPAPER #${12 - position} | New",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

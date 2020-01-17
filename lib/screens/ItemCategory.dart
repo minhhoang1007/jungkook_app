@@ -1,19 +1,25 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:jungkook_app/configs/ads.dart';
 import 'package:jungkook_app/screens/ItemPhoto.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
 class ItemCategory extends StatefulWidget {
   String title;
-  ItemCategory({this.title, Key key}) : super(key: key);
+  int rand;
+  ItemCategory({this.title, this.rand, Key key}) : super(key: key);
 
   @override
   _ItemCategoryState createState() => _ItemCategoryState();
 }
 
-const String testDevice = 'MobileId';
-
 class _ItemCategoryState extends State<ItemCategory> {
   List<String> items = [
+    "assets/recent/kook21.jpg",
+    "assets/recent/kook20.jpg",
+    "assets/recent/kook19.jpg",
     "assets/recent/kook13.jpg",
     "assets/recent/kook14.jpg",
     "assets/recent/kook15.jpg",
@@ -33,40 +39,17 @@ class _ItemCategoryState extends State<ItemCategory> {
     "assets/recent/kook11.jpg",
     "assets/recent/kook12.jpg",
   ];
-  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    testDevices: testDevice != null ? <String>[testDevice] : null,
-    nonPersonalizedAds: true,
-    keywords: <String>['Game', 'Mario'],
-  );
-  BannerAd _bannerAd;
+
   InterstitialAd _interstitialAd;
   bool abc = false;
   bool isLoad = false;
-  BannerAd createBannerAd() {
-    return BannerAd(
-        adUnitId: BannerAd.testAdUnitId,
-        //Change BannerAd adUnitId with Admob ID
-        size: AdSize.banner,
-        targetingInfo: targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("BannerAd $event");
-        });
-  }
 
-  // InterstitialAd createInterstitialAd() {
-  //   return InterstitialAd(
-  //       adUnitId: InterstitialAd.testAdUnitId,
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("IntersttialAd $event");
-  //       });
-  // }
   void getAd(item) async {
     setState(() {
       isLoad = true;
     });
     _interstitialAd = InterstitialAd(
-      adUnitId: InterstitialAd.testAdUnitId,
+      adUnitId: interUnitId,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.closed) {
           _interstitialAd.load();
@@ -80,10 +63,7 @@ class _ItemCategoryState extends State<ItemCategory> {
   void handEvent(MobileAdEvent event, item) {
     switch (event) {
       case MobileAdEvent.loaded:
-        //if (!c) {
         _interstitialAd.show();
-        //c = true;
-        //}
         break;
       case MobileAdEvent.opened:
         break;
@@ -113,28 +93,21 @@ class _ItemCategoryState extends State<ItemCategory> {
     }
   }
 
+  Random rand = new Random();
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
-    // _bannerAd = createBannerAd()
-    //   ..load()
-    //   ..show();
+    FirebaseAdMob.instance.initialize(appId: appId);
     super.initState();
   }
 
   @override
   void dispose() {
-    //_bannerAd.dispose();
-    //_interstitialAd.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height - kToolbarHeight) / 2;
-    final double itemWidth = size.width / 2;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 0, 0, 130),
@@ -152,33 +125,38 @@ class _ItemCategoryState extends State<ItemCategory> {
       ),
       body: Stack(
         children: <Widget>[
-          GridView.builder(
+          StaggeredGridView.countBuilder(
+            crossAxisCount: 4,
+            physics: ScrollPhysics(),
             itemCount: items.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
-            itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
+            itemBuilder: (BuildContext context, int index) => Card(
+              elevation: 4,
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                  child: InkWell(
                 onTap: () {
-                  getAd(items[index]);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => ItemPhoto(
-                  //               img: items[index],
-                  //             )));
+                  widget.rand % 2 == 0
+                      ? getAd(items[index])
+                      : getAd(items[items.length - index - 1]);
                 },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: Image.asset(items[index]),
-                ),
-              );
-            },
+                child: Image.asset(
+                    widget.rand % 2 == 0
+                        ? items[index]
+                        : items[items.length - index - 1],
+                    fit: BoxFit.cover),
+              )),
+            ),
+            staggeredTileBuilder: (int index) =>
+                StaggeredTile.count(2, index.isEven ? 2.7 : 3),
+            scrollDirection: Axis.vertical,
+            mainAxisSpacing: 3.0,
+            crossAxisSpacing: 3.0,
           ),
           isLoad
               ? Positioned(
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 1,
+                    color: Colors.transparent,
+                    height: MediaQuery.of(context).size.height,
                     width: double.infinity,
                     child: Center(
                       child: CircularProgressIndicator(),

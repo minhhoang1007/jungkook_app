@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jungkook_app/screens/HomeScreen.dart';
 import 'package:jungkook_app/utils/Common.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(MyApp());
+SharedPreferences prefs;
+void main() async {
+  prefs = await SharedPreferences.getInstance();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   static var platform = MethodChannel(Common.CHANNEL);

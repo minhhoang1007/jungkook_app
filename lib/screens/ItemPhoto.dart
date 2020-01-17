@@ -22,7 +22,7 @@ class _ItemPhotoState extends State<ItemPhoto> {
   @override
   void initState() {
     super.initState();
-    Common.item.length == 0 ? chonfavo = false : chonfavo = true;
+    Common.item.contains(widget.img) ? chonfavo = true : chonfavo = false;
     loadImage();
   }
 
@@ -67,10 +67,32 @@ class _ItemPhotoState extends State<ItemPhoto> {
     }).catchError((onError) {});
   }
 
-  //favorite
+  //save favorite
+  void saveFav(String name) async {
+    if (Common.item == null) Common.item = [];
+    Common.item.add(name);
+    prefs
+        .setStringList(Common.LIST_FAVORITE, Common.item)
+        .then((onValue) {})
+        .catchError((onError) {});
+  }
+
+  //delete fav
+  void deleteFav(String name) async {
+    Common.item.remove(name);
+    prefs.setStringList(Common.LIST_FAVORITE, Common.item).then((onValue) {
+      if (onValue)
+        setState(() {
+          Common.item;
+        });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
+      bottom: false,
       child: Center(
         child: Scaffold(
           key: _scaffoldKey,
@@ -83,7 +105,7 @@ class _ItemPhotoState extends State<ItemPhoto> {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: MediaQuery.of(context).size.height * 0.15,
                 width: double.infinity,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,8 +133,8 @@ class _ItemPhotoState extends State<ItemPhoto> {
                                 ),
                           onPressed: () {
                             chonfavo
-                                ? Common.item.remove(widget.img)
-                                : Common.item.add(widget.img);
+                                ? deleteFav(widget.img)
+                                : saveFav(widget.img);
                             print(Common.item.length);
                             setState(() {
                               chonfavo = !chonfavo;
