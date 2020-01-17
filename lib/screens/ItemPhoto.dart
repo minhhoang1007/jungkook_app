@@ -22,7 +22,9 @@ class _ItemPhotoState extends State<ItemPhoto> {
   @override
   void initState() {
     super.initState();
-    Common.item.contains(widget.img) ? chonfavo = true : chonfavo = false;
+    Common.item == null
+        ? chonfavo = false
+        : Common.item.contains(widget.img) ? chonfavo = true : chonfavo = false;
     loadImage();
   }
 
